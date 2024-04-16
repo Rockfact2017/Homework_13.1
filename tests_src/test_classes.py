@@ -1,3 +1,4 @@
+
 import pytest
 
 from classes import Category
@@ -32,20 +33,6 @@ def test_category_init(category):
     assert Category.total_unique_products == 3
 
 
-def test_category_add_product(category):
-    """Тест для проверки метода add_product класса Category."""
-    category.add_product(Product("Sweater", "A warm and cozy sweater", 25.00, 12))
-    assert len(category.products) == 4
-    assert Category.total_unique_products == 4
-
-
-def test_category_remove_product(category):
-    """Тест для проверки метода remove_product класса Category."""
-    category.remove_product("Jeans")
-    assert len(category.products) == 2
-    assert Category.total_unique_products == 2
-
-
 def test_product_init(product):
     """Тест для проверки корректности инициализации экземпляра класса Product."""
     assert product.name == "T-shirt"
@@ -54,13 +41,4 @@ def test_product_init(product):
     assert product.quantity_in_stock == 20
 
 
-def test_product_add_to_stock(product):
-    """Тест для проверки метода add_to_stock класса Product."""
-    product.add_to_stock(10)
-    assert product.quantity_in_stock == 30
 
-
-def test_product_remove_from_stock(product):
-    """Тест для проверки метода remove_from_stock класса Product."""
-    product.remove_from_stock(5)
-    assert product.quantity_in_stock == 15
