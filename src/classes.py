@@ -21,7 +21,11 @@ class Category:
             [f"{product.name}, {product.price} руб. Остаток: {product.quantity_in_stock} шт." for product in
              self.__products])
 
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {len(self.__products)} шт."
 
+    def __len__(self):
+        return len(self.__products)
 
 
 class Product:
@@ -50,6 +54,7 @@ class Product:
                 return product
         return cls(name, description, price, quantity_in_stock)
 
+    @property
     def price(self):
         return self.__price
 
@@ -69,4 +74,32 @@ class Product:
 
             if self.__price < self.old_price:
                 self.old_price = self.__price
+
+    def __call__(self):
+        return self.__price
+
+    def __str__(self):
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity_in_stock} шт."
+
+    def __add__(self, other):
+        return self() * self.quantity_in_stock + other() * other.quantity_in_stock
+
+
+# class CategoryProducts:
+#     def __init__(self, category, product):
+#         self.product = product
+#         self.category = category
+#         self.index = 0
+#
+#     def __iter__(self):
+#         return self
+#
+#     def __next__(self):
+#         if self.index < len(self.category.products):
+#             product = self.category.products[self.index]
+#             self.index += 1
+#             return product
+#         else:
+#             raise StopIteration
+
 
