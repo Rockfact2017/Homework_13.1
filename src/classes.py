@@ -13,6 +13,9 @@ class Category:
         Category.total_unique_products += len(set(products))
 
     def add_product(self, product):
+        if not isinstance(product, Product) and not issubclass(type(product), Product):
+            raise TypeError("В категорию можно добавлять только объекты класса Product и его наследников.")
+
         self.__products.append(product)
 
     @property
@@ -82,7 +85,48 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity_in_stock} шт."
 
     def __add__(self, other):
+        if not isinstance(other, Product):
+            raise TypeError("Можно складывать только объекты класса Product и его наследников.")
+
+        if not isinstance(self, type(other)):
+            raise TypeError("Можно складывать только товары одного класса.")
+
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
+
+
+class Smartphone(Product):
+    def __init__(self, name, description, price, quantity_in_stock, performance, model, internal_memory, color):
+        super().__init__(name, description, price, quantity_in_stock)
+        self.performance = performance
+        self.model = model
+        self.internal_memory = internal_memory
+        self.color = color
+
+class Grass(Product):
+    def __init__(self, name, description, price, quantity_in_stock, country_of_origin, germination_period, color):
+        super().__init__(name, description, price, quantity_in_stock)
+        self.country_of_origin = country_of_origin
+        self.germination_period = germination_period
+        self.color = color
+
+
+# Создаем категорию "Электроника и другое"
+electronics_and_others = Category("Электроника", "Категория товаров, связанных с электроникой", [])
+
+# Создаем смартфон
+smartphone = Smartphone("iPhone 14 Pro", "Новый iPhone 14 Pro", 1000.00, 10, "Высокая", "iPhone 14 Pro", 128, "Черный")
+
+# Добавляем смартфон в категорию
+electronics_and_others.add_product(smartphone)
+
+# Создаем траву газонную
+grass = Grass("Трава газонная", "Трава для газона", 15.00, 20, "Россия", "14 дней", "Зеленый")
+
+# Добавляем траву газонную в категорию
+electronics_and_others.add_product(grass)
+
+# Выводим список продуктов в категории
+print(electronics_and_others.list_of_products)
 
 
 # class CategoryProducts:
