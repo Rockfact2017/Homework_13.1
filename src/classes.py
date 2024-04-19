@@ -123,24 +123,6 @@ class Grass(Product):
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
 
 
-# Создаем категорию "Электроника и другое"
-electronics_and_others = Category("Электроника", "Категория товаров, связанных с электроникой", [])
-
-# Создаем смартфон
-smartphone = Smartphone("iPhone 14 Pro", "Новый iPhone 14 Pro", 1000.00, 10, "Высокая", "iPhone 14 Pro", 128, "Черный")
-
-# Добавляем смартфон в категорию
-electronics_and_others.add_product(smartphone)
-
-# Создаем траву газонную
-grass = Grass("Трава газонная", "Трава для газона", 15.00, 20, "Россия", "14 дней", "Зеленый")
-
-# Добавляем траву газонную в категорию
-electronics_and_others.add_product(grass)
-
-# Выводим список продуктов в категории
-print(electronics_and_others.list_of_products)
-
 
 # class CategoryProducts:
 #     def __init__(self, category, product):
