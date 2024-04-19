@@ -102,12 +102,25 @@ class Smartphone(Product):
         self.internal_memory = internal_memory
         self.color = color
 
+    def __add__(self, other):
+        if not isinstance(other, Smartphone):
+            raise TypeError("Можно складывать только объекты класса Smartphone.")
+
+        return self() * self.quantity_in_stock + other() * other.quantity_in_stock
+
+
 class Grass(Product):
     def __init__(self, name, description, price, quantity_in_stock, country_of_origin, germination_period, color):
         super().__init__(name, description, price, quantity_in_stock)
         self.country_of_origin = country_of_origin
         self.germination_period = germination_period
         self.color = color
+
+    def __add__(self, other):
+        if not isinstance(other, Grass):
+            raise TypeError("Можно складывать только объекты класса Grass.")
+
+        return self() * self.quantity_in_stock + other() * other.quantity_in_stock
 
 
 # Создаем категорию "Электроника и другое"
