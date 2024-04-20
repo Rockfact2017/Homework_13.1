@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 class Category:
     name: str
     description: str
@@ -31,12 +33,7 @@ class Category:
         return len(self.__products)
 
 
-class Product:
-    name: str
-    description: str
-    price: float
-    quantity_in_stock: int
-
+class Product(ABC):
     def __init__(self, name, description, price, quantity_in_stock):
         self.name = name
         self.description = description
@@ -94,7 +91,12 @@ class Product:
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
 
 
-class Smartphone(Product):
+class Printable:
+    def __repr__(self):
+        return f"{self.__class__.__name__}({', '.join([f'{key}={value}' for key, value in self.__dict__.items()])})"
+
+
+class Smartphone(Product, Printable):
     def __init__(self, name, description, price, quantity_in_stock, performance, model, internal_memory, color):
         super().__init__(name, description, price, quantity_in_stock)
         self.performance = performance
@@ -109,7 +111,7 @@ class Smartphone(Product):
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
 
 
-class Grass(Product):
+class Grass(Product, Printable):
     def __init__(self, name, description, price, quantity_in_stock, country_of_origin, germination_period, color):
         super().__init__(name, description, price, quantity_in_stock)
         self.country_of_origin = country_of_origin
@@ -121,7 +123,6 @@ class Grass(Product):
             raise TypeError("Можно складывать только объекты класса Grass.")
 
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
-
 
 
 # class CategoryProducts:
