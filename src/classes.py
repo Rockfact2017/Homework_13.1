@@ -96,7 +96,15 @@ class Printable:
         return f"{self.__class__.__name__}({', '.join([f'{key}={value}' for key, value in self.__dict__.items()])})"
 
 
-class Smartphone(Product, Printable):
+class ProductMixin(Printable):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print(f"Создан объект {self.__class__.__name__} со следующими атрибутами:")
+        for key, value in self.__dict__.items():
+            print(f"{key}={value}")
+
+
+class Smartphone(Product, ProductMixin):
     def __init__(self, name, description, price, quantity_in_stock, performance, model, internal_memory, color):
         super().__init__(name, description, price, quantity_in_stock)
         self.performance = performance
@@ -111,7 +119,7 @@ class Smartphone(Product, Printable):
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
 
 
-class Grass(Product, Printable):
+class Grass(Product, ProductMixin):
     def __init__(self, name, description, price, quantity_in_stock, country_of_origin, germination_period, color):
         super().__init__(name, description, price, quantity_in_stock)
         self.country_of_origin = country_of_origin
@@ -123,6 +131,7 @@ class Grass(Product, Printable):
             raise TypeError("Можно складывать только объекты класса Grass.")
 
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
+
 
 
 # class CategoryProducts:
