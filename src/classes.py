@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 
+
 class LoggingMixin:
     """
     Миксин для логирования создания объектов.
     Выводит в консоль сообщение о создании объекта.
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         print(f"{self.__repr__()} создан.")  # Логирование создания объекта
@@ -15,6 +17,7 @@ class LoggingMixin:
         """
         attributes = ', '.join([f"{key}={value}" for key, value in self.__dict__.items()])
         return f"{self.__class__.__name__}({attributes})"
+
 
 class AbstractProduct(ABC):
     """
@@ -31,6 +34,9 @@ class AbstractProduct(ABC):
         """
         Инициализирует объект продукта.
         """
+        if quantity_in_stock == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен.")
+
         self.name = name
         self.description = description
         self._price = price
@@ -81,10 +87,12 @@ class AbstractProduct(ABC):
         """
         pass
 
+
 class Product(LoggingMixin, AbstractProduct):
     """
     Класс, представляющий общий продукт.
     """
+
     def __init__(self, name, description, price, quantity_in_stock):
         super().__init__(name, description, price, quantity_in_stock)
 
@@ -101,6 +109,9 @@ class Product(LoggingMixin, AbstractProduct):
         Добавляет продукт к списку продуктов, увеличивая количество,
         если продукт с таким именем уже существует.
         """
+        if quantity_in_stock == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен.")
+
         for product in products:
             if product.name == name:
                 product.quantity_in_stock += quantity_in_stock
@@ -127,10 +138,12 @@ class Product(LoggingMixin, AbstractProduct):
 
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
 
+
 class Smartphone(Product):
     """
     Класс, представляющий смартфон.
     """
+
     def __init__(self, name, description, price, quantity_in_stock, performance, model, internal_memory, color):
         super().__init__(name, description, price, quantity_in_stock)
         self.performance = performance
@@ -147,10 +160,12 @@ class Smartphone(Product):
 
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
 
+
 class Grass(Product):
     """
     Класс, представляющий газонную траву.
     """
+
     def __init__(self, name, description, price, quantity_in_stock, country_of_origin, germination_period, color):
         super().__init__(name, description, price, quantity_in_stock)
         self.country_of_origin = country_of_origin
@@ -165,6 +180,7 @@ class Grass(Product):
             raise TypeError("Можно складывать только объекты класса Grass.")
 
         return self() * self.quantity_in_stock + other() * other.quantity_in_stock
+
 
 class Category:
     """
@@ -216,8 +232,17 @@ class Category:
         """
         return len(self.__products)
 
-
-
+    def average_price(self):
+        """
+        Возвращает среднюю цену всех товаров в категории.
+        Обрабатывает случай, когда в категории нет товаров.
+        """
+        try:
+            total_price = sum(product.price for product in self.__products)
+            average = total_price / len(self.__products)
+            return average
+        except ZeroDivisionError:
+            return 0
 
 # class CategoryProducts:
 #     def __init__(self, category, product):
